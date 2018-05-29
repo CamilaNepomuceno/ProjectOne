@@ -16,25 +16,29 @@
 	</head>
 	<body>
 		<section class="homeBgImage">
-			<img src="resources/img/homepageBackground.png"/>	
 			<header class="headerC">
 			<div class="mainHeading"> Quidditch is a wizarding sport played on broomsticks. </div>
 				
 			<p class="caption">The object of the game is to catch the Golden Snitch.</p>
 				
-			<a> <button class="haveaGoalB"> Have a goal!!! </button> </a>
+			<a> <button class="haveaGoalB" onclick="startGame()"> Have a Go!!! </button> </a>
+                
+            <h1 id="victories"> Snitches catched: </h1>
+                
 			
-			<div class="harryP">
 				<article class="wow bounceInLeft" data-wow-duration="2s">
-				<img src="resources/img/HarryPotter.jpg" />
+                    <div class="harryP" id="TheHarryP">
+                        </div>
 				</article>
-			</div>
+			
 				
-			<div class="goldenSnitch">
 				<article class="wow flash" data-wow-duration="4s">
-				<img src="resources/img/goldenSnitch.jpg" />
+				
+                    <div class="goldenSnitch" id="TheSnitch">
+                    </div>
+
 				</article>
-			</div>
+			
 			
 				
 			</header>
@@ -44,6 +48,86 @@
 		<script src=https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js></script>
 		<script>
 		new WOW().init();
+            
+            var harry = document.getElementById("TheHarryP");
+            var snitch = document.getElementById("TheSnitch");
+            var timeOut;
+            var delaySnitch = 3000;
+            var victoryCount = 0;
+            var victoriesDisplay = document.getElementById("victories");
+            
+            (function(){
+                var harry = document.getElementById("TheHarryP");
+                
+            })()
+            
+            function startGame(){
+                
+                document.onmousemove = handler;
+                timeOut = window.setInterval(moveSnitch, delaySnitch);
+                victoriesDisplay.innerHTML = ("Snitches catched: " + victoryCount);
+                victoriesDisplay.style.display = "block";
+                
+            }
+            
+            function moveSnitch(){
+                snitch.style.left = Math.floor(Math.random() * 100) + "vw";
+                snitch.style.top = Math.floor(Math.random() * 100)  + "vh";
+                
+            }
+            
+            function placeDiv(x_pos, y_pos) {
+                var d = document.getElementById('TheHarryP');
+                d.style.position = "absolute";
+                d.style.left = x_pos+'px';
+                d.style.top = y_pos+'px';
+                }
+            
+            function handler(e) {
+                e = e || window.event;
+
+                var pageX = e.pageX;
+                var pageY = e.pageY;
+                
+                placeDiv(pageX - 72.5, pageY-60);
+                
+                if (isCollide (harry,snitch)){
+                    
+                   /* alert("You Won!!!");
+                    
+                    window.clearTimeout(timeOut);
+                    harry.style.left = "45vw";
+                    harry.style.top = "60vh";
+                    document.onmousemove = null;
+                    snitch.style.left = "80vw";
+                    snitch.style.top = "30vh";
+                    */
+                    
+                    harry.style.left = "45vw";
+                    harry.style.top = "60vh";
+                    snitch.style.left = "80vw";
+                    snitch.style.top = "30vh";
+                    victoryCount++;
+                    window.clearTimeout(timeOut);
+                    
+                    timeOut = window.setInterval(moveSnitch, delaySnitch );
+                    victoriesDisplay.innerHTML = ("Snitches catched: " + victoryCount);
+                    
+                    
+                }
+
+                console.log(pageX, pageY);
+            }
+        
+            function isCollide(a, b) {
+    return !(
+        ((a.offsetLeft + a.offsetWidth) < (b.offsetLeft)) ||
+        (a.offsetLeft > (b.offsetLeft + b.offsetWidth)) ||
+        ((a.offsetTop + a.offsetHeight) < b.offsetTop) ||
+        (a.offsetTop > (b.offsetTop + b.offsetHeight))
+    );
+}
+            
 		</script>  
 		
 	</body>

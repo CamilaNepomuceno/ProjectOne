@@ -17,7 +17,7 @@
 .homeBgImage {
 	
 	position: relative;
-	background-image: url(/resources/img/homepageBackground.png);
+	background-image: url(../img/homepageBackground.png);
 	background-repeat: no-repeat;
 	background-position: center 0;
 	background-size: cover;
@@ -56,29 +56,42 @@
 .haveaGoalB {
 	
 	position: absolute;
-	top: 200px;
+	top: 20vh;
+    left: 45vw;
+    color: rgb(200, 200, 250);
+    border-color: rgb(200, 177, 250);
+    border-bottom-color: rgb(200, 177, 250);
+    border-right-color: rgb(200, 177, 250);
+    background-color: rgb(100, 98, 230);
 	border-radius: 5px 5px;
 	text-align: center;
-	font-size: 1.5em;
+	font-size: 1.4em;
+    
 }
 
 .harryP{
+    
+    background-image: url(../img/harry.png);
+    background-size: cover;
 	position: absolute;
-	top: 420px;
-	bottom: 15px;
+	top: 60vh;
 	text-align: center;
-	left: 50px;
-	right: 50px;
+	left: 45vw;
+	width: 145px;
+    height: 120px;
+    cursor: none;
 	
 }
 
 .goldenSnitch {
+    
+    background-image: url(../img/goldenSnitchcrop.gif);
+    background-size: cover;
 	position: absolute;
-	top: 220px;
-	bottom: 15px;
-	left: 500px;
-	right: 200px;
+	top: 30vh;
+	left: 80vw;
 	text-align: right;
-	
+	width: 71px;
+    height: 34px;
 	
 }
