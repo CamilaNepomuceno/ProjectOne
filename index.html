@@ -14,7 +14,9 @@
 		
 		
 	</head>
+    
 	<body>
+        
 		<section class="homeBgImage">
 			<header class="headerC">
 			<div class="mainHeading"> Quidditch is a wizarding sport played on broomsticks. </div>
@@ -44,9 +46,12 @@
 			</header>
 		</section>
 		
-		<!-- WOW .Js CDN -->	
+		<!-- WOW .Js CDN -->
+        
 		<script src=https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js></script>
+        
 		<script>
+            
 		new WOW().init();
             
             var harry = document.getElementById("TheHarryP");
@@ -108,9 +113,8 @@
                     snitch.style.left = "80vw";
                     snitch.style.top = "30vh";
                     victoryCount++;
-                    window.clearTimeout(timeOut);
-                    
-                    timeOut = window.setInterval(moveSnitch, delaySnitch );
+                    /* window.clearTimeout(timeOut); */
+                    timeOut = window.setInterval(moveSnitch, (delaySnitch / victoryCount));
                     victoriesDisplay.innerHTML = ("Snitches catched: " + victoryCount);
                     
                     
@@ -120,13 +124,13 @@
             }
         
             function isCollide(a, b) {
-    return !(
-        ((a.offsetLeft + a.offsetWidth) < (b.offsetLeft)) ||
-        (a.offsetLeft > (b.offsetLeft + b.offsetWidth)) ||
-        ((a.offsetTop + a.offsetHeight) < b.offsetTop) ||
-        (a.offsetTop > (b.offsetTop + b.offsetHeight))
-    );
-}
+            return !(
+                ((a.offsetLeft + a.offsetWidth) < (b.offsetLeft)) ||
+                (a.offsetLeft > (b.offsetLeft + b.offsetWidth)) ||
+                ((a.offsetTop + a.offsetHeight) < b.offsetTop) ||
+                (a.offsetTop > (b.offsetTop + b.offsetHeight))
+            );
+            }
             
 		</script>  
 		
