@@ -53,7 +53,7 @@
 	
 }
 
-.haveaGoalB {
+.haveaGoB {
 	
 	position: absolute;
 	top: 20vh;
@@ -97,10 +97,15 @@
 }
 
 .bludger {
-    background-image: url(../img/Bludger.jpg);
-    background-size: cover;
-    
-    
+    background-image: url(../img/Bludger.png);
+	background-size: cover;
+	position: absolute;
+	top: 30vh;
+	right: 80vw;
+	text-align: left;
+	width: 120px;
+    height: 120px;
+	
     
 }
 

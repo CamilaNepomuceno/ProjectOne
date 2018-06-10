@@ -1,138 +1,250 @@
 <!doctype html>
 <html>
-	<head>
-		<title>Quidditch</title>
-		<meta charset= "utf-8" />
-		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-		<meta name="description" content="Quidditch is a wizarding sport that the object is to catch the Golden Snitch"/>
-		
-	<!-- Animate.CSS -->
-	<link rel="stylesheet" href="vendors/css/Animate.css" />
-		
-	<!-- Main CSS page being linked  -->
-	<link rel="stylesheet" type="text/css" href="resources/css/main.css" />
-		
-		
-	</head>
-    
-	<body>
-        
-		<section class="homeBgImage">
-			<header class="headerC">
-			<div class="mainHeading"> Quidditch is a wizarding sport played on broomsticks. </div>
-				
-			<p class="caption">The object of the game is to catch the Golden Snitch.</p>
-				
-			<a> <button class="haveaGoalB" onclick="startGame()"> Have a Go!!! </button> </a>
-                
-            <h1 id="victories"> Snitches catched: </h1>
-                
-			
-				<article class="wow bounceInLeft" data-wow-duration="2s">
-                    <div class="harryP" id="TheHarryP">
-                        </div>
-				</article>
-			
-				
-				<article class="wow flash" data-wow-duration="4s">
-				
-                    <div class="goldenSnitch" id="TheSnitch">
-                    </div>
 
-				</article>
-			
-			
-				
-			</header>
-		</section>
-		
-		<!-- WOW .Js CDN -->
-        
-		<script src=https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js></script>
-        
-		<script>
-            
-		new WOW().init();
-            
-            var harry = document.getElementById("TheHarryP");
-            var snitch = document.getElementById("TheSnitch");
-            var timeOut;
-            var delaySnitch = 3000;
-            var victoryCount = 0;
-            var victoriesDisplay = document.getElementById("victories");
-            
-            (function(){
-                var harry = document.getElementById("TheHarryP");
-                
-            })()
-            
-            function startGame(){
-                
-                document.onmousemove = handler;
-                timeOut = window.setInterval(moveSnitch, delaySnitch);
-                victoriesDisplay.innerHTML = ("Snitches catched: " + victoryCount);
-                victoriesDisplay.style.display = "block";
-                
-            }
-            
-            function moveSnitch(){
-                snitch.style.left = Math.floor(Math.random() * 100) + "vw";
-                snitch.style.top = Math.floor(Math.random() * 100)  + "vh";
-                
-            }
-            
-            function placeDiv(x_pos, y_pos) {
-                var d = document.getElementById('TheHarryP');
-                d.style.position = "absolute";
-                d.style.left = x_pos+'px';
-                d.style.top = y_pos+'px';
-                }
-            
-            function handler(e) {
-                e = e || window.event;
+<head>
+    <title>Quidditch</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Quidditch is a wizarding sport that the object is to catch the Golden Snitch" />
 
-                var pageX = e.pageX;
-                var pageY = e.pageY;
-                
-                placeDiv(pageX - 72.5, pageY-60);
-                
-                if (isCollide (harry,snitch)){
-                    
-                   /* alert("You Won!!!");
-                    
-                    window.clearTimeout(timeOut);
-                    harry.style.left = "45vw";
-                    harry.style.top = "60vh";
-                    document.onmousemove = null;
-                    snitch.style.left = "80vw";
-                    snitch.style.top = "30vh";
-                    */
-                    
-                    harry.style.left = "45vw";
-                    harry.style.top = "60vh";
-                    snitch.style.left = "80vw";
-                    snitch.style.top = "30vh";
-                    victoryCount++;
-                    /* window.clearTimeout(timeOut); */
-                    timeOut = window.setInterval(moveSnitch, (delaySnitch / victoryCount));
-                    victoriesDisplay.innerHTML = ("Snitches catched: " + victoryCount);
-                    
-                    
-                }
+    <!-- Animate.CSS -->
+    <link rel="stylesheet" href="vendors/css/Animate.css" />
 
-                console.log(pageX, pageY);
+    <!-- Main CSS page being linked  -->
+    <link rel="stylesheet" type="text/css" href="resources/css/main.css" />
+
+
+
+</head>
+
+<body>
+    <!--
+        Base div for the vue app 
+        mouse move bind done when the game is started 
+    -->
+    <div id="app" v-on="{ mousemove: started ? harryMove : emptyMove }" v-on="{ touchmove: started ? harryMove : emptyMove }">
+        <!--Scene background-->
+        <section class="homeBgImage">
+            <!--Titles -->
+            <header class="headerC">
+                <div class="mainHeading"> Quidditch is a wizarding sport played on broomsticks. </div>
+                <p class="caption">The object of the game is to catch the Golden Snitch.</p>
+                <a>
+                    <!--
+                        When clicked on start a game
+                        Displayed only when game is not started
+                    -->
+                    <button class="haveaGoB" v-if="!started" v-on:click="startGame"> Have a Go!!! </button>
+                </a>
+                <!--
+                    If the game is started display victory count
+                    bind total victories to victoryCount
+                -->
+                <h1 id="victories" v-if="started"> Points: {{ victoryCount }}</h1>
+            </header>
+            <!--Harry potter-->
+            <div class="wow bounceInLeft" data-wow-duration="2s">
+                <div class="harryP" v-bind:style="harryStyle" id="TheHarryP" ref="theHarryP">
+                </div>
+            </div>
+            <!--Snitch-->
+            <div class="wow flash" data-wow-duration="4s">
+                <div class="goldenSnitch" class="goldenSnitch" id="TheSnitch" ref="theSnitch">
+                </div>
+            </div>
+            <!--Bludger-->
+            <ul style="list-style-type: none">
+                <li v-for="item in bludgers">
+                    <img src="./resources/img/Bludger.png" ref="bludgers" v-bind:style="item.style" :width="item.width" :height="item.height">
+                </li>
+            </ul>
+        </section>
+    </div>
+    <!--Vue js  -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!--Anime.js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.js"></script>
+    <!-- WOW .Js CDN -->
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js></script>
+
+    <script>
+        function width() {
+            return (window.innerWidth) ?
+                window.innerWidth :
+                document.documentElement.clientWidth || document.body.clientWidth || 0;
+        }
+        function height() {
+            return (window.innerHeight) ?
+                window.innerHeight :
+                document.documentElement.clientHeight || document.body.clientHeight || 0;
+        }
+        var timeOut;
+
+        // Initializing vue config
+        var app = new Vue({
+            // Element that vue should bind to
+            el: '#app',
+            // Data  available to be worked with vue
+            data: {
+                harry: {
+                    height: 120,
+                    width: 145,
+                    x: 0,
+                    y: 0,
+                },
+                harryStyle: {
+                    top: '60vh',
+                    left: '45vw',
+                },
+                snitch: {
+                    width: 71,
+                    height: 34,
+                    x: 0,
+                    y: 0,
+                },
+                snitchStyle: {
+                    top: '30vh',
+                    left: '80vw',
+                },
+                delaySnitch: 5000,
+                victoryCount: 0,
+                started: false,
+                isplaying: false,
+                bludgers: [],
+            },
+            // Actions to happen when the page is loaded
+            mounted: function () {
+                new WOW().init();
+                this.snitch.x = this.$refs.theSnitch.offsetLeft;
+                this.snitch.y = this.$refs.theSnitch.offsetTop;
+                this.harry.x = this.$refs.theHarryP.offsetLeft;
+                this.harry.y = this.$refs.theHarryP.offsetTop;
+            },
+            //Methods to bind to the elements and for internal execution
+            methods: {
+                // Auxiliar function in case the game hasn't started to do not move harry.
+                emptyMove: function () { },
+
+                // Starting a game and seting up the defaults
+                startGame: function () {
+                    const self = this;
+                    // Seting up the snitch movement
+                    timeOut = setInterval(function () {
+                        self.snitchMove();
+                    }, this.delaySnitch);
+
+                    //Initializing game 
+                    this.started = true;
+                    this.isplaying = true;
+                },
+                // You won time to increase the score
+                incrementVictory: function () {
+                    //Only count when it is moving
+                    if (this.isplaying) {
+                        this.isplaying = false;
+                        this.victoryCount++;
+                        var xTarget = Math.floor(Math.random() * width());
+                        var yTarget = Math.floor(Math.random() * width());
+
+                        //Add a new bludger
+                        this.bludgers.push({
+                            style: {
+                                left: xTarget + 'px',
+                                top: yTarget + 'px',
+                                position: 'absolute'
+                            },
+                            x: xTarget,
+                            y: yTarget,
+                            width: 50,
+                            height: 50,
+                        });
+
+                        this.snitchMove();
+
+                        this.isplaying = true;
+
+                    }
+                },
+                //check if there is overlap between two objects
+                isColide: function (a, b) {
+                    return !(
+                        ((a.offsetLeft + a.offsetWidth) < (b.offsetLeft)) ||
+                        (a.offsetLeft > (b.offsetLeft + b.offsetWidth)) ||
+                        ((a.offsetTop + a.offsetHeight) < b.offsetTop) ||
+                        (a.offsetTop > (b.offsetTop + b.offsetHeight))
+                    );
+                },
+                //Change harry position and check if there is a win or if colides with a bludger
+                harryMove: function (event) {
+                    // Changing harry position
+                    this.harry.x = event.clientX;
+                    this.harry.y = event.clientY;
+                    this.harryStyle.top = (event.clientY - this.harry.width / 2) + 'px';
+                    this.harryStyle.left = (event.clientX - this.harry.height / 2) + 'px';
+
+                    // Check if there is a win
+                    if (this.isColide(this.$refs.theHarryP, this.$refs.theSnitch)) {
+                        this.incrementVictory();
+                    }
+                    if (this.$refs.bludgers) {
+                        this.$refs.bludgers.forEach((item) => {
+                            if (this.isplaying) {
+                                if (this.isColide(this.$refs.theHarryP, item)) {
+                                    this.resetGame();
+                                }
+                            }
+                        })
+                    }
+
+                },
+                resetGame: function () {
+                    this.isplaying = false;
+                    this.started = false;
+                    clearInterval(timeOut);
+                    this.$refs.theSnitch.style.top = '30vh';
+                    this.$refs.theSnitch.style.left = '80vw';
+                    this.$refs.theHarryP.style.top = '60vh';
+                    this.$refs.theHarryP.style.left = '45vw';
+                    alert('You scored:' + this.victoryCount + ' points');
+                    let length = this.bludgers.length;
+                    for (let index = 0; index < length; index++) {
+                        this.bludgers.pop();
+                    }
+                },
+
+                //Change snitch position
+                snitchMove: function () {
+
+                    var self = this;
+                    var padding = 20;
+                    // Set desired position
+                    var left = Math.floor(Math.random() * (width() - padding));
+                    var top = Math.floor(Math.random() * (height() - padding));
+                    if(left < padding)
+                        left = padding;
+                    if(top < padding)
+                        top = padding;
+                    
+                    this.snitch.x = left;
+                    this.snitch.y = top;
+                    
+                    var animation = window.anime({
+                        targets: '#TheSnitch',
+                        left: left,
+                        top: top,
+                        begin: function(anim) {
+                            window.app.isplaying = false;
+                        },
+                        complete: function (element) {
+                            window.app.isplaying = true;
+                        }
+                    });
+                    
+                },
             }
-        
-            function isCollide(a, b) {
-            return !(
-                ((a.offsetLeft + a.offsetWidth) < (b.offsetLeft)) ||
-                (a.offsetLeft > (b.offsetLeft + b.offsetWidth)) ||
-                ((a.offsetTop + a.offsetHeight) < b.offsetTop) ||
-                (a.offsetTop > (b.offsetTop + b.offsetHeight))
-            );
-            }
-            
-		</script>  
-		
-	</body>
+        });
+    </script>
+
+</body>
+
 </html>
